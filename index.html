@@ -1062,6 +1062,40 @@ https://templatemo.com/tm-591-villa-agency
   <script src="assets/js/owl-carousel.js"></script>
   <script src="assets/js/counter.js"></script>
   <script src="assets/js/custom.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const counters = document.querySelectorAll('.counter span');
+      const circles = document.querySelectorAll('.outer-circle circle');
+
+      counters.forEach((counter, index) => {
+        const target = +counter.getAttribute('data-target');
+        const circle = circles[index];
+        const radius = circle.r.baseVal.value;
+        const circumference = 2 * Math.PI * radius;
+
+        circle.style.strokeDasharray = `${circumference} ${circumference}`;
+        circle.style.strokeDashoffset = circumference;
+
+        const offset = circumference - (target / 100) * circumference;
+        circle.style.strokeDashoffset = offset;
+
+        let current = 0;
+        const increment = target / 100;
+
+        const updateCounter = () => {
+          if (current < target) {
+            current += increment;
+            counter.textContent = Math.floor(current);
+            requestAnimationFrame(updateCounter);
+          } else {
+            counter.textContent = target;
+          }
+        };
+
+        updateCounter();
+      });
+    });
+  </script>
 
   </body>
 </html>
